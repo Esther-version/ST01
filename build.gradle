@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id "de.undercouch.download" version "5.3.0"
 }
 
 group 'org.example'
@@ -23,7 +24,9 @@ repositories {
 dependencies {
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/junit/junit
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 sourceSets {
@@ -38,25 +41,37 @@ sourceSets {
 }
 
 
-task thridTask {
-    doLast {
-        println "hallo"
+
+task downloadFile(type: Download) {
+    //src 'http://www.example.com/index.html'
+    src 'https://datahub.io/core/covid-19/r/covid-19_zip.zip'
+    dest file("$buildDir/tmp")
+    overwrite true
+}
+
+task downloadAndUnzipFile (type: Copy, dependsOn: downloadFile) {
+    from zipTree("$buildDir/tmp/covid-19_zip.zip")
+    into file("src/main/resources")
+    //src/main/resources/
+    rename { fileName ->
+        "countries-aggregated_json.json"
     }
 }
+
 
 task buildCore (type: JavaCompile){
     source = sourceSets.main.java.srcDirs
     exclude 'de/unitrier/st/ui'
     classpath = sourceSets.main.compileClasspath
     destinationDir = new File("${buildDir}/classes/java/main")
+    finalizedBy(downloadAndUnzipFile)
 }
 
 task buildUI (type: JavaCompile) {
     source = sourceSets.main.java.srcDirs
     classpath = sourceSets.main.compileClasspath
     destinationDir = new File("${buildDir}/classes/java/main")
-
-
+    finalizedBy(downloadAndUnzipFile)
 }
 
 task runCore (type: JavaExec, dependsOn: buildCore) {
@@ -64,14 +79,12 @@ task runCore (type: JavaExec, dependsOn: buildCore) {
     mainClass = 'de.unitrier.st.core.Main'
 }
 
-task runUI (type: JavaExec) {
-
-
+task runUI (type: JavaExec, dependsOn: buildUI) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'de.unitrier.st.core.Main'
 }
 
 
-//sourceSets { }
-// koennen default gradle Pfade angepsst werden
-// exclude und includ Pfade entfernt und hinzufuegen
+
 
 

@@ -1,6 +1,9 @@
 # Ignore Gradle project-specific cache directory
 .gradle
 .idea
+src/main/resources/archive
+src/main/resources/data
+src/main/resources/countries-aggregated_json.json
 
 # Ignore Gradle build output directory
 build
