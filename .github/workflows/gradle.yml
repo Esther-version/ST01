@@ -31,3 +31,11 @@ jobs:
       with:
         gradle-version: 6.9.1
         arguments: test
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@v3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        gradle-version: 6.9.1
+        arguments: build sonarqube --info
