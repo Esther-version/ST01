@@ -20,7 +20,7 @@ public class DataTest {
     @Test(expected = NullPointerException.class)
     public void exeptionOnEmptyJson()
     {
-        //dataParser.parseJsonData("");
+        dataParser.parseJsonData("");
     }
 
 }
