@@ -9,10 +9,18 @@ import java.util.List;
 import java.util.Map;
 
 public class DataTest {
+    DataParser dataParser = new DataParser();
+
 
     @Test
     public void tmpTest() {
         Assert.assertEquals(true, true);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void exeptionOnEmptyJson()
+    {
+        //dataParser.parseJsonData("");
     }
 
 }

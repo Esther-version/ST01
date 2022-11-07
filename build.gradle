@@ -73,6 +73,7 @@ task buildCore (type: JavaCompile){
     classpath = sourceSets.main.compileClasspath
     destinationDir = new File("${buildDir}/classes/java/main")
     finalizedBy(downloadAndUnzipFile)
+    finalizedBy(test)
 }
 
 task buildUI (type: JavaCompile) {
@@ -80,6 +81,7 @@ task buildUI (type: JavaCompile) {
     classpath = sourceSets.main.compileClasspath
     destinationDir = new File("${buildDir}/classes/java/main")
     finalizedBy(downloadAndUnzipFile)
+    finalizedBy(test)
 }
 
 task runCore (type: JavaExec, dependsOn: buildCore) {
