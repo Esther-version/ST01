@@ -26,3 +26,8 @@ jobs:
       with:
         gradle-version: 6.9.1
         arguments: buildUI
+    - name: test with Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 6.9.1
+        arguments: test
