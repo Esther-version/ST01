@@ -58,6 +58,7 @@ task downloadFile(type: Download) {
 }
 
 task downloadAndUnzipFile (type: Copy, dependsOn: downloadFile) {
+    duplicatesStrategy = DuplicatesStrategy.INHERIT
     from zipTree("$buildDir/tmp/covid-19_zip.zip")
     into file("src/main/resources")
     //src/main/resources/
